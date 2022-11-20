@@ -87,9 +87,30 @@ const updateUserById = (req, res) => {
     });
 };
 
+// *************** Methode DELETE **************************
+
+const deleteUserById = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query('DELETE FROM users WHERE id = ?', [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send('Not Found');
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Erreur de suppression de l utilisateur');
+    });
+};
+
 module.exports = {
   getUsers,
   getUsersById,
   addUser,
   updateUserById,
+  deleteUserById,
 };

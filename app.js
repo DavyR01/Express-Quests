@@ -22,6 +22,7 @@ app.get('/api/movies', movieHandlers.getMovies);
 app.get('/api/movies/:id', movieHandlers.getMovieById);
 app.post('/api/movies', movieHandlers.addMovie);
 app.put('/api/movies/:id', movieHandlers.updateMovieById);
+app.delete('/api/movies/:id', movieHandlers.deleteMovieById);
 
 /***************GET USERS *********************/
 
@@ -31,6 +32,7 @@ app.get('/api/users', usersHandlers.getUsers);
 app.get('/api/users/:id', usersHandlers.getUsersById);
 app.post('/api/users', usersHandlers.addUser);
 app.put('/api/users/:id', usersHandlers.updateUserById);
+app.delete('/api/users/:id', usersHandlers.deleteUserById);
 
 /************************************************/
 

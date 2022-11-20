@@ -25,6 +25,8 @@
 //   },
 // ];
 
+// *************** Methode GET **************************
+
 const database = require('./database');
 
 const getMovies = (req, res) => {
@@ -51,11 +53,13 @@ const getMovies = (req, res) => {
 //   }
 // };
 
+// *************** Methode GET **************************
+
 const getMovieById = (req, res) => {
   const id = parseInt(req.params.id);
 
   database
-    .query('select * from movies where id = ?', [id])
+    .query('SELECT * FROM movies WHERE id = ?', [id])
     .then(([movies]) => {
       if (movies[0] != null) {
         res.json(movies[0]);
@@ -64,7 +68,7 @@ const getMovieById = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send('Error retrieving data from database');
+      res.status(500).send('Erreur de récupération de la database');
     });
 };
 
@@ -72,6 +76,8 @@ const getMovieById = (req, res) => {
 //   console.log(req.body);
 //   res.send('Post route is working');
 // };
+
+// *************** Methode POST **************************
 
 const addMovie = (req, res) => {
   const { title, director, year, color, duration } = req.body;
@@ -86,9 +92,11 @@ const addMovie = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error saving the movie');
+      res.status(500).send('Erreur de sauvegarde du film');
     });
 };
+
+// *************** Methode PUT **************************
 
 const updateMovieById = (req, res) => {
   const id = parseInt(req.params.id);
@@ -96,7 +104,7 @@ const updateMovieById = (req, res) => {
 
   database
     .query(
-      'update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?',
+      'UPDATE MOVIES SET title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?',
       [title, director, year, color, duration, id]
     )
     .then(([result]) => {
@@ -108,7 +116,27 @@ const updateMovieById = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error editing the movie');
+      res.status(500).send('Erreur d édition du film');
+    });
+};
+
+// *************** Methode DELETE **************************
+
+const deleteMovieById = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query('DELETE FROM movies WHERE id = ?', [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send('Not Found');
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Erreur de suppression du film');
     });
 };
 
@@ -117,4 +145,5 @@ module.exports = {
   getMovieById,
   addMovie,
   updateMovieById,
+  deleteMovieById,
 };
