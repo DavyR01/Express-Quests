@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5003;
+const port = process.env.APP_PORT ?? 5000;
 
 const welcome = (req, res) => {
   res.send('Welcome to my express quest');
@@ -21,6 +21,7 @@ const movieHandlers = require('./movieHandlers');
 app.get('/api/movies', movieHandlers.getMovies);
 app.get('/api/movies/:id', movieHandlers.getMovieById);
 app.post('/api/movies', movieHandlers.addMovie);
+// app.put('/api/movies/:id', movieHandlers.updateMovieById);
 
 /***************GET USERS *********************/
 
