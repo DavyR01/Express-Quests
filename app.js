@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5000;
+const port = process.env.APP_PORT ?? 5003;
 
 const welcome = (req, res) => {
   res.send('Welcome to my express quest');
