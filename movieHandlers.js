@@ -78,11 +78,13 @@ const addMovie = (req, res) => {
 
   database
     .query(
-      'INSERT INTO movies(title, director, year, color, duration) VALUES (?,?<?,?,?)'[
+      'INSERT INTO movies(title, director, year, color, duration) VALUES (?,?,?,?,?)'[
         (title, director, year, color, duration)
       ]
     )
-    .then(([result]) => {})
+    .then(([result]) => {
+      res.location(`/api/movies/${result.insertId}`).sendStatus(201);
+    })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Erreur de sauvegarde du film');

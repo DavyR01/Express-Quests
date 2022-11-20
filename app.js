@@ -9,7 +9,7 @@ app.use(express.json());
 const port = process.env.APP_PORT ?? 5000;
 
 const welcome = (req, res) => {
-  res.send('Welcome to my favourite movie list');
+  res.send('Welcome to my express quest');
 };
 
 /***************GET MOVIES *********************/
@@ -28,6 +28,7 @@ const usersHandlers = require('./usersHandlers');
 
 app.get('/api/users', usersHandlers.getUsers);
 app.get('/api/users/:id', usersHandlers.getUsersById);
+app.post('/api/users', usersHandlers.addUser);
 
 /************************************************/
 
