@@ -2,7 +2,7 @@ const database = require('./database');
 
 const getUsers = (req, res) => {
   database
-    .query('select * from users')
+    .query('SELECT * FROM users')
     .then(([users]) => {
       res.json(users);
     })
@@ -30,9 +30,10 @@ const getUsersById = (req, res) => {
   database
     .query('select * from users where id = ?', [id])
     .then(([users]) => {
-      if (users[0] != null) {
+      //   if (users[0] != null) {
+      if (users.length) {
         res.json(users[0]);
-        // res.status(200);
+        // res.sendStatus(200); cela veut dire que tout est ok donc pas besoin de le mettre
       } else {
         res.status(404).send('Not Found');
       }
