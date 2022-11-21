@@ -29,9 +29,54 @@
 
 const database = require('./database');
 
+// const getMovies = (req, res) => {
+//   database
+//     .query('select * from movies')
+//     .then(([movies]) => {
+//       res.json(movies);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send('Error retrieving data from database');
+//     });
+// };
+
+// ********************************** Methodes GET EN DETAIL EXPRESS 06*******************************
+
 const getMovies = (req, res) => {
+  const sql = 'SELECT * FROM movies';
+  const sqlValues = [];
+
+  /********Gestion COLOR ***********/
+  // if (req.query.color != null) {
+  //   sql += 'WHERE color = ?';
+  //   sqlValues.push(req.query.color);
+  // }
+
+  /********Gestion DURATION ***********/
+
+  // if (req.query.max_duration != null) {
+  //   sql += 'WHERE duration <= ?';
+  //   sqlValues.push(req.query.max_duration);
+  // }
+
+  /********Gestion COLOR & DURATION ***********/
+
+  if (req.query.color != null) {
+    sql += 'WHERE color = ?';
+    sqlValues.push(req.query.color);
+
+    if (req.query.max_duration != null) {
+      sql += 'AND duration <= ?';
+      sqlValues.push(req.query.max_duration);
+    }
+  } else if (req.query.max_duration != null) {
+    sql += 'WHERE duration <= ?';
+    sqlValues.push(req.query.max_duration);
+  }
+
   database
-    .query('select * from movies')
+    .query(sql, sqlValues)
     .then(([movies]) => {
       res.json(movies);
     })
@@ -40,6 +85,8 @@ const getMovies = (req, res) => {
       res.status(500).send('Error retrieving data from database');
     });
 };
+
+// *************************** Methode GET (by ID) ********************************
 
 // const getMovieById = (req, res) => {
 //   const id = parseInt(req.params.id);
@@ -52,8 +99,6 @@ const getMovies = (req, res) => {
 //     res.status(404).send('Not Found');
 //   }
 // };
-
-// *************** Methode GET **************************
 
 const getMovieById = (req, res) => {
   const id = parseInt(req.params.id);
@@ -72,12 +117,12 @@ const getMovieById = (req, res) => {
     });
 };
 
+// *************** Methode POST **************************
+
 // const addMovie = (req, res) => {
 //   console.log(req.body);
 //   res.send('Post route is working');
 // };
-
-// *************** Methode POST **************************
 
 const addMovie = (req, res) => {
   const { title, director, year, color, duration } = req.body;
