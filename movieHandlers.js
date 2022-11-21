@@ -44,36 +44,38 @@ const database = require('./database');
 // ********************************** Methodes GET EN DETAIL EXPRESS 06*******************************
 
 const getMovies = (req, res) => {
-  const sql = 'SELECT * FROM movies';
+  let sql = 'SELECT * FROM movies';
   const sqlValues = [];
 
   /********Gestion COLOR ***********/
-  if (req.query.color != null) {
-    sql += 'WHERE color = ?';
-    sqlValues.push(req.query.color);
-  }
+  // Ne pas oublier de mettre un espace avant WHERE : IMPORTANT sinon erreur
+
+  // if (req.query.color != null) {
+  //   sql += ' WHERE color = ?';
+  //   sqlValues.push(req.query.color);
+  // }
 
   /********Gestion DURATION ***********/
 
-  if (req.query.max_duration != null) {
-    sql += 'WHERE duration <= ?';
-    sqlValues.push(req.query.max_duration);
-  }
+  // if (req.query.max_duration != null) {
+  //   sql += ' WHERE duration <= ?';
+  //   sqlValues.push(req.query.max_duration);
+  // }
 
   /********Gestion COLOR & DURATION ***********/
 
-  // if (req.query.color != null) {
-  //   sql += 'WHERE color = ?';
-  //   sqlValues.push(req.query.color);
+  if (req.query.color != null) {
+    sql += ' WHERE color = ?';
+    sqlValues.push(req.query.color);
 
-  //   if (req.query.max_duration != null) {
-  //     sql += 'AND duration <= ?';
-  //     sqlValues.push(req.query.max_duration);
-  //   }
-  // } else if (req.query.max_duration != null) {
-  //   sql += 'WHERE duration <= ?';
-  //   sqlValues.push(req.query.max_duration);
-  // }
+    if (req.query.max_duration != null) {
+      sql += ' AND duration <= ?';
+      sqlValues.push(req.query.max_duration);
+    }
+  } else if (req.query.max_duration != null) {
+    sql += ' WHERE duration <= ?';
+    sqlValues.push(req.query.max_duration);
+  }
 
   database
     .query(sql, sqlValues)
@@ -82,7 +84,7 @@ const getMovies = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error retrieving data from database');
+      res.status(500).send('Erreur récupérations data movies from database');
     });
 };
 
@@ -113,7 +115,7 @@ const getMovieById = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send('Erreur de récupération de la database');
+      res.status(500).send('Erreur de récupération de la database by ID');
     });
 };
 
