@@ -48,32 +48,32 @@ const getMovies = (req, res) => {
   const sqlValues = [];
 
   /********Gestion COLOR ***********/
-  // if (req.query.color != null) {
-  //   sql += 'WHERE color = ?';
-  //   sqlValues.push(req.query.color);
-  // }
-
-  /********Gestion DURATION ***********/
-
-  // if (req.query.max_duration != null) {
-  //   sql += 'WHERE duration <= ?';
-  //   sqlValues.push(req.query.max_duration);
-  // }
-
-  /********Gestion COLOR & DURATION ***********/
-
   if (req.query.color != null) {
     sql += 'WHERE color = ?';
     sqlValues.push(req.query.color);
+  }
 
-    if (req.query.max_duration != null) {
-      sql += 'AND duration <= ?';
-      sqlValues.push(req.query.max_duration);
-    }
-  } else if (req.query.max_duration != null) {
+  /********Gestion DURATION ***********/
+
+  if (req.query.max_duration != null) {
     sql += 'WHERE duration <= ?';
     sqlValues.push(req.query.max_duration);
   }
+
+  /********Gestion COLOR & DURATION ***********/
+
+  // if (req.query.color != null) {
+  //   sql += 'WHERE color = ?';
+  //   sqlValues.push(req.query.color);
+
+  //   if (req.query.max_duration != null) {
+  //     sql += 'AND duration <= ?';
+  //     sqlValues.push(req.query.max_duration);
+  //   }
+  // } else if (req.query.max_duration != null) {
+  //   sql += 'WHERE duration <= ?';
+  //   sqlValues.push(req.query.max_duration);
+  // }
 
   database
     .query(sql, sqlValues)
