@@ -1,3 +1,4 @@
+const { hashPassword } = require('./auth');
 const database = require('./database');
 
 const getUsers = (req, res) => {
@@ -85,8 +86,8 @@ const addUser = (req, res) => {
 
   database
     .query(
-      'INSERT INTO users(firstname, lastname, email, city, language ) VALUES (?, ?, ?, ?, ?)',
-      [firstname, lastname, email, city, language]
+      'INSERT INTO users(firstname, lastname, email, city, language, hashedPassword ) VALUES (?, ?, ?, ?, ?, ?)',
+      [firstname, lastname, email, city, language, hashedPassword]
     )
     .then(([result]) => {
       res.location(`/api/users/${result.insertId}`).sendStatus(201);
