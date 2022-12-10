@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5000;
+const port = process.env.APP_PORT ?? 5001;
 
 const welcome = (req, res) => {
   res.send('Welcome to my express quest');
@@ -27,10 +27,11 @@ app.delete('/api/movies/:id', movieHandlers.deleteMovieById);
 /***************GET USERS *********************/
 
 const usersHandlers = require('./usersHandlers');
+const { hashPassword } = require('./auth.js');
 
 app.get('/api/users', usersHandlers.getUsers);
 app.get('/api/users/:id', usersHandlers.getUsersById);
-app.post('/api/users', usersHandlers.addUser);
+app.post('/api/users', hashPassword, usersHandlers.addUser);
 app.put('/api/users/:id', usersHandlers.updateUserById);
 app.delete('/api/users/:id', usersHandlers.deleteUserById);
 
