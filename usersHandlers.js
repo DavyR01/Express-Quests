@@ -81,6 +81,8 @@ const getUsersById = (req, res) => {
 //   res.send('le post route fonctionne correctement');
 // };
 
+/************************ Méthode POST user ************************/
+
 const addUser = (req, res) => {
   const { firstname, lastname, email, city, language, hashedPassword } =
     req.body;
@@ -141,10 +143,33 @@ const deleteUserById = (req, res) => {
     });
 };
 
+/********** QUETE EXPRESS 7 : Enregistrer des utilisateurs de manière sécurisée  ********/
+
+const getUserByEmailWithPasswordAndPassToNext = (req, res) => {
+  const { email } = req.body;
+
+  database
+    .query('select * from users where email = ?', [email])
+    .then(([users]) => {
+      if (users[0] != null) {
+        res.user = users[0];
+
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error retrieving data from database');
+    });
+};
+
 module.exports = {
   getUsers,
   getUsersById,
   addUser,
   updateUserById,
   deleteUserById,
+  getUserByEmailWithPasswordAndPassToNext,
 };
