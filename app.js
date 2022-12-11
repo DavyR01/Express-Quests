@@ -22,6 +22,10 @@ const movieHandlers = require('./movieHandlers');
 
 app.get('/api/movies', movieHandlers.getMovies);
 app.get('/api/movies/:id', movieHandlers.getMovieById);
+
+// The routes to protect
+app.use(verifyToken);
+
 app.post('/api/movies', movieHandlers.addMovie);
 app.put('/api/movies/:id', movieHandlers.updateMovieById);
 app.delete('/api/movies/:id', movieHandlers.deleteMovieById);
