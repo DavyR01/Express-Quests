@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.APP_PORT ?? 5002;
+const port = process.env.APP_PORT ?? 5000;
 
 const welcome = (req, res) => {
   res.send('Welcome to my express quest');
@@ -19,26 +19,14 @@ const { hashPassword, verifyPassword, verifyToken } = require('./auth.js');
 app.get('/', welcome);
 
 const movieHandlers = require('./movieHandlers');
+const usersHandlers = require('./usersHandlers');
 
 app.get('/api/movies', movieHandlers.getMovies);
 app.get('/api/movies/:id', movieHandlers.getMovieById);
 
-// The routes to protect
-app.use(verifyToken);
-
-app.post('/api/movies', movieHandlers.addMovie);
-app.put('/api/movies/:id', movieHandlers.updateMovieById);
-app.delete('/api/movies/:id', movieHandlers.deleteMovieById);
-
-/*************** TABLE USERS *********************/
-
-const usersHandlers = require('./usersHandlers');
-
 app.get('/api/users', usersHandlers.getUsers);
 app.get('/api/users/:id', usersHandlers.getUsersById);
 app.post('/api/users', hashPassword, usersHandlers.addUser);
-app.put('/api/users/:id', usersHandlers.updateUserById);
-app.delete('/api/users/:id', usersHandlers.deleteUserById);
 
 /****************AUTHENTIFICATION avec JWT ********************************/
 
@@ -60,6 +48,18 @@ app.post(
   usersHandlers.getUserByEmailWithPasswordAndPassToNext,
   verifyPassword
 );
+
+/********************The routes to protect *********************************/
+app.use(verifyToken);
+
+app.post('/api/movies', movieHandlers.addMovie);
+app.put('/api/movies/:id', movieHandlers.updateMovieById);
+app.delete('/api/movies/:id', movieHandlers.deleteMovieById);
+
+/*************** TABLE USERS *********************/
+
+app.put('/api/users/:id', usersHandlers.updateUserById);
+app.delete('/api/users/:id', usersHandlers.deleteUserById);
 
 /************************************************/
 
