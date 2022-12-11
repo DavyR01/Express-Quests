@@ -143,7 +143,7 @@ const deleteUserById = (req, res) => {
     });
 };
 
-/********** QUETE EXPRESS 7 : Enregistrer des utilisateurs de manière sécurisée  ********/
+/********** QUETE EXPRESS 8 : Authentification avec JWT  🗝️ ********/
 
 const getUserByEmailWithPasswordAndPassToNext = (req, res) => {
   const { email } = req.body;
