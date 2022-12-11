@@ -14,21 +14,12 @@ const welcome = (req, res) => {
 //Importing the hasing and the verification for our login post
 const { hashPassword, verifyPassword, verifyToken } = require('./auth.js');
 
-/*************** TABLE MOVIES *********************/
-
 app.get('/', welcome);
 
 const movieHandlers = require('./movieHandlers');
 const usersHandlers = require('./usersHandlers');
 
-app.get('/api/movies', movieHandlers.getMovies);
-app.get('/api/movies/:id', movieHandlers.getMovieById);
-
-app.get('/api/users', usersHandlers.getUsers);
-app.get('/api/users/:id', usersHandlers.getUsersById);
-app.post('/api/users', hashPassword, usersHandlers.addUser);
-
-/****************AUTHENTIFICATION avec JWT ********************************/
+/************  LOGIN ATUHENTIFICATION AVEC JWT  ****************************/
 
 // const isItDwight = (req, res) => {
 //   if (
@@ -49,7 +40,18 @@ app.post(
   verifyPassword
 );
 
-/********************The routes to protect *********************************/
+//GET
+
+app.get('/api/movies', movieHandlers.getMovies);
+app.get('/api/movies/:id', movieHandlers.getMovieById);
+
+app.get('/api/users', usersHandlers.getUsers);
+app.get('/api/users/:id', usersHandlers.getUsersById);
+
+// POST (without protection)
+app.post('/api/users', hashPassword, usersHandlers.addUser);
+
+/********************The routes to protect (verify token) *********************************/
 app.use(verifyToken);
 
 app.post('/api/movies', movieHandlers.addMovie);
